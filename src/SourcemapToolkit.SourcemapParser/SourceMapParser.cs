@@ -1,5 +1,7 @@
 ﻿using System.IO;
 using Newtonsoft.Json;
+using System.Runtime.CompilerServices;
+[assembly:InternalsVisibleTo("SourcemapToolkit.SourcemapParser.UnitTests")]
 
 namespace SourcemapToolkit.SourcemapParser
 {

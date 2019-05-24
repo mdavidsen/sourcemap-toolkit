@@ -1,6 +1,6 @@
 ﻿using Xunit;
-using Rhino.Mocks;
 using SourcemapToolkit.SourcemapParser.UnitTests;
+using NSubstitute;
 
 namespace SourcemapToolkit.CallstackDeminifier.UnitTests
 {
@@ -13,11 +13,11 @@ namespace SourcemapToolkit.CallstackDeminifier.UnitTests
 
         private StackTraceDeminifier GetStackTraceDeminifierWithDependencies()
 		{
-			ISourceMapProvider sourceMapProvider = MockRepository.GenerateStrictMock<ISourceMapProvider>();
-			sourceMapProvider.Stub(x => x.GetSourceMapContentsForCallstackUrl("http://localhost:11323/crashcauser.min.js")).Return(UnitTestUtils.StreamReaderFromString(SourceMapString));
+			ISourceMapProvider sourceMapProvider = Substitute.For<ISourceMapProvider>();
+			sourceMapProvider.GetSourceMapContentsForCallstackUrl("http://localhost:11323/crashcauser.min.js").Returns(UnitTestUtils.StreamReaderFromString(SourceMapString));
 
-			ISourceCodeProvider sourceCodeProvider = MockRepository.GenerateStrictMock<ISourceCodeProvider>();
-			sourceCodeProvider.Stub(x => x.GetSourceCode("http://localhost:11323/crashcauser.min.js")).Return(UnitTestUtils.StreamReaderFromString(GeneratedCodeString));
+			ISourceCodeProvider sourceCodeProvider = Substitute.For<ISourceCodeProvider>();
+			sourceCodeProvider.GetSourceCode("http://localhost:11323/crashcauser.min.js").Returns(UnitTestUtils.StreamReaderFromString(GeneratedCodeString));
 
             return StackTraceDeminfierFactory.GetStackTraceDeminfier(sourceMapProvider, sourceCodeProvider);
         }

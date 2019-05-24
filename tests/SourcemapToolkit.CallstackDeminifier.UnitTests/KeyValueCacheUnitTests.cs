@@ -1,6 +1,6 @@
 ﻿using System;
 using Xunit;
-using Rhino.Mocks;
+using NSubstitute;
 
 namespace SourcemapToolkit.CallstackDeminifier.UnitTests
 {
@@ -11,8 +11,8 @@ namespace SourcemapToolkit.CallstackDeminifier.UnitTests
 		public void GetValue_KeyNotInCache_CallValueGetter()
 		{
 			// Arrange
-			Func<string, string> valueGetter = MockRepository.GenerateStrictMock<Func<string, string>>();
-			valueGetter.Stub(x => x("bar")).Return("foo");
+			Func<string, string> valueGetter = Substitute.For<Func<string, string>>();
+			valueGetter("bar").Returns("foo");
 			KeyValueCache<string, string> keyValueCache = new KeyValueCache<string, string>(valueGetter);
 
 			// Act
@@ -27,8 +27,8 @@ namespace SourcemapToolkit.CallstackDeminifier.UnitTests
 		public void GetValue_CallGetTwice_OnlyCallValueGetterOnce()
 		{
 			// Arrange
-			Func<string, string> valueGetter = MockRepository.GenerateStrictMock<Func<string, string>>();
-			valueGetter.Stub(x => x("bar")).Return("foo").Repeat.Once();
+			Func<string, string> valueGetter = Substitute.For<Func<string, string>>();
+			valueGetter("bar").Returns("foo");
 			KeyValueCache<string, string> keyValueCache = new KeyValueCache<string, string>(valueGetter);
 			keyValueCache.GetValue("bar"); // Place the value in the cache
 
@@ -37,15 +37,15 @@ namespace SourcemapToolkit.CallstackDeminifier.UnitTests
 
 			// Assert
 			Assert.Equal("foo", result);
-			valueGetter.VerifyAllExpectations();
+			valueGetter.Received(1)("bar");
 		}
 
 		[Fact]
 		public void GetValue_CallGetTwiceValueGetterReturnsNull_CallGetterTwice()
 		{
 			// Arrange
-			Func<string, string> valueGetter = MockRepository.GenerateStrictMock<Func<string, string>>();
-			valueGetter.Stub(x => x("bar")).Return(null).Repeat.Twice();
+			Func<string, string> valueGetter = Substitute.For<Func<string, string>>();
+			valueGetter("bar").Returns((string) null);
 			KeyValueCache<string, string> keyValueCache = new KeyValueCache<string, string>(valueGetter);
 			keyValueCache.GetValue("bar"); // Place null in the cache
 
@@ -53,19 +53,19 @@ namespace SourcemapToolkit.CallstackDeminifier.UnitTests
 			string result = keyValueCache.GetValue("bar");
 
 			// Assert
-			Assert.Equal(null, result);
-			valueGetter.VerifyAllExpectations();
+			Assert.Null(result);
+			valueGetter.Received(2)("bar");
 		}
 
 		[Fact]
 		public void GetValue_CallGetMultipleTimesFirstGetterReturnsNull_CacheFirstNonNullValue()
 		{
 			// Arrange
-			Func<string, string> valueGetter = MockRepository.GenerateStrictMock<Func<string, string>>();
-			valueGetter.Stub(x => x("bar")).Return(null).Repeat.Once();
+			Func<string, string> valueGetter = Substitute.For<Func<string, string>>();
+			valueGetter("bar").Returns((string) null);
 			KeyValueCache<string, string> keyValueCache = new KeyValueCache<string, string>(valueGetter);
 			keyValueCache.GetValue("bar"); // Place null in the cache
-			valueGetter.Stub(x => x("bar")).Return("foo").Repeat.Once();
+			valueGetter("bar").Returns("foo");
 			keyValueCache.GetValue("bar"); // Place a non null value in the cahce
 
 			// Act
@@ -73,7 +73,8 @@ namespace SourcemapToolkit.CallstackDeminifier.UnitTests
 
 			// Assert
 			Assert.Equal("foo", result);
-			valueGetter.VerifyAllExpectations();
+			valueGetter.Received(2);
+
 		}
 	}
 }

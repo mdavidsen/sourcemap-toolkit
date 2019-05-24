@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using SourcemapToolkit.SourcemapParser;
+using Microsoft.Ajax.Utilities;
 
 
 namespace SourcemapToolkit.CallstackDeminifier

@@ -4,10 +4,11 @@
         <Copyright>2016</Copyright>
         <PackageProjectUrl>https://github.com/microsoft/sourcemap-toolkit</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/microsoft/sourcemap-toolkit/blob/master/LICENSE.txt</PackageLicenseUrl>
-        <TargetFrameworks>netstandard2.0;netcoreapp2.2</TargetFrameworks>
+        <TargetFrameworks>netstandard1.3;netstandard2.0</TargetFrameworks>
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Microsoft.Ajax.Utilities\Microsoft.Ajax.Utilities.csproj" />
       <ProjectReference Include="..\SourcemapToolkit.SourcemapParser\SourcemapToolkit.SourcemapParser.csproj" />
     </ItemGroup>
 

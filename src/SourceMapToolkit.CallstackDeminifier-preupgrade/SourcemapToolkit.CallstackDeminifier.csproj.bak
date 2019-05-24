@@ -37,10 +37,6 @@
     <AssemblyOriginatorKeyFile>..\..\SourceMapToolkit.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AjaxMin, Version=5.14.5506.26196, Culture=neutral, PublicKeyToken=21ef50ce11b5d80f, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\AjaxMin.5.14.5506.26202\lib\net40\AjaxMin.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -76,13 +72,14 @@
     <Compile Include="StackTraceParser.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Microsoft.Ajax.Utilities\Microsoft.Ajax.Utilities.csproj">
+      <Project>{4ff7e4b3-d72d-4877-bd25-9881d27537d7}</Project>
+      <Name>Microsoft.Ajax.Utilities</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SourcemapToolkit.SourcemapParser\SourcemapToolkit.SourcemapParser.csproj">
       <Project>{69FD1EB5-32F2-4759-9187-9A8E25927BCA}</Project>
       <Name>SourcemapToolkit.SourcemapParser</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
